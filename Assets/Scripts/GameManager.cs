@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private TMP_Text p1HP;
     [SerializeField] private TMP_Text p2HP;
+
+    [SerializeField] private GameObject _playagain;
 
     private void Awake()
     {
@@ -83,6 +86,8 @@ public class GameManager : MonoBehaviour
 
     public void WinCondition(bool isPlayer)
     {
+        _playagain.SetActive(true);
+
         if (isPlayer)
         {
             p1UI.SetActive(true);

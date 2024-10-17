@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CarController : MonoBehaviour
@@ -29,7 +30,6 @@ public class CarController : MonoBehaviour
         public GameObject wheelModel;
         public WheelCollider wheelCollider;
         public GameObject wheelEffectObj;
-        //public ParticleSystem smokeParticle;
         public Axel axel;
     }
 
@@ -48,19 +48,19 @@ public class CarController : MonoBehaviour
     float moveInput;
     float steerInput;
 
+    [SerializeField] private GameObject[] healthbar;
+    int healthbarCount;
+
     private Rigidbody carRb;
-    //private int _health = 5;
 
     public int CheckPointCount = 0;
 
     public Player _player;
-    //private CarLights carLights;
     void Start()
     {
         carRb = GetComponent<Rigidbody>();
         carRb.centerOfMass = _centerOfMass;
-        
-        //carLights = GetComponent<CarLights>();
+        healthbarCount= healthbar.Length-1;
     }
 
     void Update()
@@ -130,9 +130,6 @@ public class CarController : MonoBehaviour
             {
                 wheel.wheelCollider.brakeTorque = 300 * brakeAcceleration * Time.deltaTime;
             }
-
-            //carLights.isBackLightOn = true;
-            //carLights.OperateBackLights();
         }
         else
         {
@@ -140,9 +137,6 @@ public class CarController : MonoBehaviour
             {
                 wheel.wheelCollider.brakeTorque = 0;
             }
-
-            //carLights.isBackLightOn = false;
-            //carLights.OperateBackLights();
         }
     }
 
@@ -162,12 +156,9 @@ public class CarController : MonoBehaviour
     {
         foreach (var wheel in wheels)
         {
-            //var dirtParticleMainSettings = wheel.smokeParticle.main;
-
             if (Input.GetKey(KeyCode.Space) && wheel.axel == Axel.Rear && wheel.wheelCollider.isGrounded == true && carRb.velocity.magnitude >= 10.0f)
             {
                 wheel.wheelEffectObj.GetComponentInChildren<TrailRenderer>().emitting = true;
-                //wheel.smokeParticle.Emit(1);
             }
             else
             {
@@ -185,60 +176,40 @@ public class CarController : MonoBehaviour
             if (collision.gameObject.CompareTag("Red") || collision.gameObject.CompareTag("Blue"))
             {
                 Rigidbody otherplayer = collision.gameObject.GetComponent<Rigidbody>();
-
-
-
-                //Vector3 RelativeVelocity = collision.relativeVelocity;
-                //Vector3 CollisionNormal = collision.contacts[0].normal;
-                //float ImpactForce = Vector3.Dot(RelativeVelocity, CollisionNormal);
-
-                //Debug.Log("Player1" + carRb.velocity.magnitude);
-                //Debug.Log(otherplayer.gameObject.name + "Player2" + otherplayer.velocity.magnitude);
-
                 if (otherplayer.velocity.magnitude > carRb.velocity.magnitude)
                 {
-                    GameManager.Instance.ReduceHp(true);
-
+                    GameManager.Instance.ReduceHp(true,this);
                 }
                 else
                 {
-                    GameManager.Instance.ReduceHp(false);
-                    //collision.gameObject.GetComponent<CarController>().ReduceHp();
+                    GameManager.Instance.ReduceHp(false,collision.gameObject.GetComponent<CarController>());
                 }
             }
-            //if (_player == Player.Red)
-            //{
-            //}
-            //else if(_player == Player.Blue)
-            //{
-            //}
         }
-
-        
-
     }
     bool ch2 = true;
     bool ch1 = true;
 
     private void OnTriggerEnter(Collider other)
     {
-        
-
         if ((other.gameObject.CompareTag("checkpoint1")) && ch1)
         {
             CheckPointCount++;
             ch1 = false;
         }
-
-        
         if ((other.gameObject.CompareTag("checkpoint2")) && ch2)
         {
             CheckPointCount++;
             ch2 = false;
         }
     }
-    //public void ReduceHp()
-    //{
-    //    _health--;
-    //}
+
+    public void HealthManager()
+    {
+        if(healthbar.Length != 0)
+        {
+            healthbar[healthbarCount].SetActive(false);
+            healthbarCount--;
+        }
+    }
 }

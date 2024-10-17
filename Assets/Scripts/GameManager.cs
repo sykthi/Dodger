@@ -37,8 +37,9 @@ public class GameManager : MonoBehaviour
         
     }
 
-    public void ReduceHp(bool isMe)
+    public void ReduceHp(bool isMe,CarController carController)
     {
+        carController.HealthManager();
         if (isMe)
         {
             player1Hp = player1Hp - 1;

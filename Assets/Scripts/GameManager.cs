@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TMP_Text p2HP;
 
     [SerializeField] private GameObject _playagain;
+    [SerializeField] private GameObject _red;
+    [SerializeField] private GameObject _blue;
 
     private void Awake()
     {
@@ -65,21 +67,17 @@ public class GameManager : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Red"))
         {
-            //Debug.Log("Checking");
             CarController cc = other.gameObject.GetComponent<CarController>();
             if (cc.CheckPointCount == 2)
             {
-                //Debug.Log("RED WIN");
                 WinCondition(true);
             }
         }
         else if (other.gameObject.CompareTag("Blue"))
         {
-            //Debug.Log("Checking");
             CarController cc = other.gameObject.GetComponent<CarController>();
             if (cc.CheckPointCount == 2)
             {
-                //Debug.Log("BLUE WIN");
                 WinCondition(false);
             }
         }
@@ -88,6 +86,8 @@ public class GameManager : MonoBehaviour
     public void WinCondition(bool isPlayer)
     {
         _playagain.SetActive(true);
+        _red.SetActive(false);
+        _blue.SetActive(false);
 
         if (isPlayer)
         {

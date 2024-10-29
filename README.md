@@ -91,10 +91,10 @@ This script manages:
 ## Game Menu
 Here is a screenshot of the game menu:
 
-![Game Menu](Assets/ScreenShots/2.png)
-![Game Menu](Assets/ScreenShots/3.png)
+![Game Menu](Assets/ScreenShots/menu.png)
+![Game Menu](Assets/ScreenShots/victory.png)
 
 ## Gameplay
 Check out the gameplay screenshot:
 
-![Gameplay](Assets/ScreenShots/1.png)
+![Gameplay](Assets/ScreenShots/gameplay.png)
